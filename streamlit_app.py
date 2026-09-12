@@ -127,8 +127,8 @@ with st.sidebar.expander("🔑 API 인증 설정", expanded=not settings.is_comp
 
 creds = (cid.strip(), csec.strip(), settings.base_url)
 
-raw_queries = st.sidebar.text_input("검색어 (쉼표로 구분)", value="제로콜라, 프로틴음료",
-                                    help="예: 제로콜라, 프로틴음료, 비건")
+raw_queries = st.sidebar.text_input("검색어 (쉼표로 구분)", value="챗GPT, 클로드, 제미나이",
+                                    help="예: 챗GPT, 클로드, 제미나이")
 queries = list(dict.fromkeys(q.strip() for q in raw_queries.split(",") if q.strip()))
 
 st.sidebar.markdown("**기간**")

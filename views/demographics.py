@@ -101,14 +101,33 @@ def render() -> None:
 
     # ── 헤드라인 그래프: 연령대별 검색어 비중 ────────────────
     if not age.empty:
-        st.plotly_chart(
-            charts.stacked_bar(
-                age.assign(세그먼트=age["세그먼트"].astype(str)),
-                "세그먼트", "구성비", "검색어",
-                "연령대별 검색어 비중 (각 막대 100%)", percent=True,
-            ),
-            width="stretch",
-        )
+        age_view = st.radio("연령대 시각화 유형", ["100% 누적 막대", "레이더 차트 (방사형 프로필)", "그룹 막대 차트"],
+                            horizontal=True, key="age_chart_view")
+        age_clean = age.assign(세그먼트=age["세그먼트"].astype(str))
+        if age_view == "100% 누적 막대":
+            st.plotly_chart(
+                charts.stacked_bar(
+                    age_clean, "세그먼트", "구성비", "검색어",
+                    "연령대별 검색어 비중 (각 막대 100%)", percent=True,
+                ),
+                width="stretch",
+            )
+        elif age_view == "레이더 차트 (방사형 프로필)":
+            st.plotly_chart(
+                charts.radar(
+                    age_clean, "구성비", "세그먼트", "검색어",
+                    "검색어별 연령대 다차원 프로필 (방사형)",
+                ),
+                width="stretch",
+            )
+        else:
+            st.plotly_chart(
+                charts.grouped_bar(
+                    age_clean, "세그먼트", "구성비", "검색어",
+                    "연령대별 검색어 비중 비교 (그룹 막대)",
+                ),
+                width="stretch",
+            )
     else:
         st.warning("연령 데이터를 받지 못했습니다.")
 

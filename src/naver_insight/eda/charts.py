@@ -204,10 +204,20 @@ def heatmap(matrix: pd.DataFrame, title, *, index_col=None, text=True, colorscal
     return _style(fig)
 
 
-def treemap(df, path, values, title):
+def treemap(df, path: list[str], values: str, title: str):
     if df is None or len(df) == 0:
         return _empty(title)
     fig = px.treemap(df, path=path, values=values, title=title,
                      color_discrete_sequence=PALETTE)
-    fig.update_layout(**_LAYOUT, height=460)
+    fig.update_layout(**_LAYOUT, height=440)
     return fig
+
+
+def radar(df, r: str, theta: str, color: str, title: str):
+    """레이더 (방사형) 차트 — 다차원 지표/세그먼트 비교용 (파이차트 대체)."""
+    if df is None or len(df) == 0:
+        return _empty(title)
+    fig = px.line_polar(df, r=r, theta=theta, color=color, line_close=True, title=title,
+                        color_discrete_sequence=PALETTE)
+    fig.update_traces(fill="toself", opacity=0.3)
+    return _style(fig)

@@ -42,7 +42,7 @@ def render() -> None:
     render_summary_box(compare_summary(long))
 
     metric = st.radio("비교 지표", ["수집건수", "API_total", "평균길이"], horizontal=True, key="cmp_metric")
-    view = st.radio("그래프", ["검색어 × 서비스 히트맵", "그룹 막대", "서비스 구성(100% 누적)"],
+    view = st.radio("그래프", ["검색어 × 서비스 히트맵", "그룹 막대", "서비스 구성(100% 누적)", "레이더 차트 (방사형)", "트리맵 (계층 구조)"],
                     horizontal=True, key="cmp_view")
 
     pivot = long.pivot_table(index="검색어", columns="서비스", values=metric, fill_value=0).reset_index()
@@ -50,9 +50,15 @@ def render() -> None:
         st.plotly_chart(charts.heatmap(pivot, f"검색어 × 서비스 — {metric}", index_col="검색어"), width="stretch")
     elif view == "그룹 막대":
         st.plotly_chart(charts.grouped_bar(long, "검색어", metric, "서비스", f"검색어별 {metric}"), width="stretch")
-    else:
+    elif view == "서비스 구성(100% 누적)":
         st.plotly_chart(charts.stacked_bar(long, "검색어", metric, "서비스",
                                            f"검색어별 서비스 구성 — {metric}", percent=True), width="stretch")
+    elif view == "레이더 차트 (방사형)":
+        st.plotly_chart(charts.radar(long.dropna(subset=[metric]), r=metric, theta="서비스",
+                                     color="검색어", title=f"검색어별 서비스 다차원 비교 ({metric})"), width="stretch")
+    else:
+        st.plotly_chart(charts.treemap(long.dropna(subset=[metric]), path=["검색어", "서비스"],
+                                       values=metric, title=f"검색어 → 서비스 계층 구성 ({metric})"), width="stretch")
 
     st.divider()
     st.markdown("#### 교차표: 검색어 × 서비스")

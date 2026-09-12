@@ -61,23 +61,29 @@ def render() -> None:
     st.divider()
     plot = summary[summary["검색어"] != "-"]
     view = st.radio(
-        "요약 그래프",
-        ["서비스 × 검색어 히트맵", "서비스별 수집량", "API 총량 비교", "서비스별 평균 텍스트 길이"],
+        "요약 그래프 유형",
+        ["서비스 × 검색어 히트맵", "서비스별 수집량 (그룹 막대)", "검색어별 서비스 구성 (100% 누적 막대)", "서비스별 수집 비중 (트리맵)", "API 신고 총량 비교", "서비스별 평균 텍스트 길이"],
         horizontal=True, key="summary_view",
     )
     if view == "서비스 × 검색어 히트맵":
         st.plotly_chart(charts.heatmap(
             plot.pivot_table(index="서비스", columns="검색어", values="수집건수", fill_value=0).reset_index(),
             "서비스 × 검색어 수집 건수", index_col="서비스"), width="stretch")
-    elif view == "서비스별 수집량":
+    elif view == "서비스별 수집량 (그룹 막대)":
         st.plotly_chart(charts.grouped_bar(plot, "서비스", "수집건수", "검색어",
                                            "서비스 × 검색어별 수집 건수"), width="stretch")
-    elif view == "API 총량 비교":
+    elif view == "검색어별 서비스 구성 (100% 누적 막대)":
+        st.plotly_chart(charts.stacked_bar(plot, "검색어", "수집건수", "서비스",
+                                           "검색어별 서비스 구성 비중 (100% 누적)", percent=True), width="stretch")
+    elif view == "서비스별 수집 비중 (트리맵)":
+        st.plotly_chart(charts.treemap(plot, ["서비스", "검색어"], "수집건수",
+                                       "서비스 → 검색어별 수집 비중 (트리맵)"), width="stretch")
+    elif view == "API 신고 총량 비교":
         st.plotly_chart(charts.bar(plot.dropna(subset=["API total"]), "서비스", "API total",
                                    "서비스별 API 신고 총량", color="검색어"), width="stretch")
     else:
         st.plotly_chart(charts.bar(plot.dropna(subset=["평균길이"]), "서비스", "평균길이",
-                                   "서비스별 평균 텍스트 길이", color="검색어"), width="stretch")
+                                   "서비스별 평균 텍스트 길이", color="검색어", orientation="h"), width="stretch")
 
     st.divider()
     st.markdown("#### 서비스 커버리지")

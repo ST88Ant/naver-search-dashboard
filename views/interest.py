@@ -66,11 +66,25 @@ def render() -> None:
     k[3].metric("관측 구간 수", f"{t['period'].nunique():,}", delta_color="off")
 
     # ── 헤드라인 그래프 ──────────────────────────────────────
-    st.plotly_chart(
-        charts.line(t, "period", "ratio", "group", "검색어별 관심도 추이",
-                    y_title="상대 검색량 (기간 내 최대 = 100)"),
-        width="stretch",
-    )
+    t_view = st.radio("관심도 추이 시각화", ["선 그래프 (Line)", "영역 그래프 (Area)", "검색어별 분포 (Box Plot)"],
+                      horizontal=True, key="interest_chart_type")
+    if t_view == "선 그래프 (Line)":
+        st.plotly_chart(
+            charts.line(t, "period", "ratio", "group", "검색어별 관심도 추이",
+                        y_title="상대 검색량 (기간 내 최대 = 100)"),
+            width="stretch",
+        )
+    elif t_view == "영역 그래프 (Area)":
+        st.plotly_chart(
+            charts.area(t, "period", "ratio", "group", "검색어별 관심도 누적 영역 추이",
+                        y_title="상대 검색량"),
+            width="stretch",
+        )
+    else:
+        st.plotly_chart(
+            charts.box(t, "group", "ratio", "검색어별 관심도 점수 분포 (Box Plot)"),
+            width="stretch",
+        )
 
     # ── 근거 ────────────────────────────────────────────────
     st.markdown("#### 근거")

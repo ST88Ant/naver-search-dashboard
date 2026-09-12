@@ -106,11 +106,20 @@ def render() -> None:
                 f"{int(top20.iloc[0]['count']):,}회", delta_color="off")
 
     # ── 헤드라인 그래프 ──────────────────────────────────────
-    st.plotly_chart(
-        charts.bar(top20.iloc[::-1], "count", "term", "가장 많이 쓰인 말 20개",
-                   orientation="h"),
-        width="stretch",
-    )
+    kw_view = st.radio("키워드 시각화", ["가로 막대 차트", "키워드 트리맵 (비중 시각화)"],
+                       horizontal=True, key="kw_chart_type")
+    if kw_view == "가로 막대 차트":
+        st.plotly_chart(
+            charts.bar(top20.iloc[::-1], "count", "term", "가장 많이 쓰인 말 20개",
+                       orientation="h"),
+            width="stretch",
+        )
+    else:
+        st.plotly_chart(
+            charts.treemap(top20, path=["term"], values="count",
+                           title="가장 많이 쓰인 핵심 키워드 트리맵"),
+            width="stretch",
+        )
 
     # ── 근거 ────────────────────────────────────────────────
     st.markdown("#### 근거")
