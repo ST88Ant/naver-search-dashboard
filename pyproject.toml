@@ -1,0 +1,19 @@
+[project]
+name = "naver-search-dashboard"
+version = "0.1.0"
+description = "네이버 마켓 인사이트 기본 EDA 대시보드 (NAVER API HUB)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "streamlit>=1.36",
+    "pandas>=2.1",
+    "requests>=2.31",
+    "plotly>=5.20",
+    "python-dotenv>=1.0",
+    "kiwipiepy>=0.23.2",
+    "openpyxl>=3.1.5",
+    "xlsxwriter>=3.2.9",
+]
+
+[tool.uv]
+package = false

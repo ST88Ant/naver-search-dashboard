@@ -1,0 +1,51 @@
+[server]
+headless = true
+port = 8501
+address = "localhost"
+
+[browser]
+gatherUsageStats = false
+
+# ─────────────────────────────────────────────────────────────
+# 핑크 테마
+#   · primaryColor / linkColor 는 핑크 램프의 진한 쪽에서 가져온다.
+#   · 글자색은 먹색을 유지한다. 글자를 핑크로 칠하면 읽기 어렵고
+#     색이 정보를 나르는 그래프와 경쟁한다.
+#   · chartCategoricalColors 는 검증된 계열 팔레트(1번만 핑크).
+#   · chartSequentialColors 는 베이비핑크 -> 진분홍 단일 색상 램프.
+# ─────────────────────────────────────────────────────────────
+[theme]
+base = "light"
+primaryColor = "#d3508e"
+backgroundColor = "#fffafc"
+secondaryBackgroundColor = "#fbeaf1"
+textColor = "#2b2430"
+linkColor = "#b72672"
+borderColor = "#f3dbe5"
+baseRadius = "large"
+buttonRadius = "full"
+showWidgetBorder = true
+chartCategoricalColors = [
+  "#ff81b8", "#089772", "#62bbf5", "#dea80b",
+  "#ad75fe", "#2955d3", "#a14206", "#913797",
+]
+chartSequentialColors = [
+  "#f9d4e2", "#f2c0d3", "#efabc5", "#e896b7", "#e180a9", "#da6a9c",
+  "#d3508e", "#c73880", "#b72672", "#a31b64", "#8f1357", "#7a0b49", "#65093c",
+]
+
+[theme.dark]
+primaryColor = "#f08ab8"
+backgroundColor = "#1c161a"
+secondaryBackgroundColor = "#2a2026"
+textColor = "#f6eef2"
+linkColor = "#f5a3c6"
+borderColor = "#3d2f36"
+chartCategoricalColors = [
+  "#df5e99", "#089772", "#399bd7", "#b88a06",
+  "#a86cfc", "#2653d8", "#a24100", "#933399",
+]
+chartSequentialColors = [
+  "#f9d4e2", "#f2c0d3", "#efabc5", "#e896b7", "#e180a9", "#da6a9c",
+  "#d3508e", "#c73880", "#b72672", "#a31b64", "#8f1357", "#7a0b49", "#65093c",
+]

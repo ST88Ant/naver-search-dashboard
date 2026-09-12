@@ -1,0 +1,71 @@
+# ─────────────────────────────────────────────────────────────
+# 환경 변수 / 비밀값 (API Key, Client Secret 등)
+# ─────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.env
+.streamlit/secrets.toml
+secrets.toml
+
+# ─────────────────────────────────────────────────────────────
+# 파이썬 가상환경 및 빌드/캐시 아티팩트
+# ─────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 가상환경 (uv, venv, conda 등)
+.venv/
+venv/
+env/
+ENV/
+.uv/
+
+# 테스트 및 린터 캐시
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# ─────────────────────────────────────────────────────────────
+# 수집 데이터 및 로그 파일 (재현 가능하거나 실행 중 생성되는 파일)
+# ─────────────────────────────────────────────────────────────
+data/**
+!data/.gitkeep
+*.log
+.streamlit/*.log
+
+# ─────────────────────────────────────────────────────────────
+# OS / IDE / 에디터 설정
+# ─────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
