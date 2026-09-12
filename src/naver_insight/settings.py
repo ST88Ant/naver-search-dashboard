@@ -33,15 +33,45 @@ class Settings:
 
 
 def load_settings() -> Settings:
-    client_id = (
-        os.getenv("NAVER_API_KEY_ID")
-        or os.getenv("NAVER_CLIENT_ID")
-        or ""
-    ).strip()
-    client_secret = (
-        os.getenv("NAVER_API_KEY")
-        or os.getenv("NAVER_CLIENT_SECRET")
-        or ""
-    ).strip()
-    base_url = (os.getenv("NAVER_API_BASE_URL") or DEFAULT_BASE_URL).strip()
+    client_id = ""
+    client_secret = ""
+    base_url = DEFAULT_BASE_URL
+
+    # 1. Streamlit Secrets 확인 (Streamlit Cloud 배포 환경)
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            client_id = str(
+                st.secrets.get("NAVER_API_KEY_ID")
+                or st.secrets.get("NAVER_CLIENT_ID")
+                or ""
+            ).strip()
+            client_secret = str(
+                st.secrets.get("NAVER_API_KEY")
+                or st.secrets.get("NAVER_CLIENT_SECRET")
+                or ""
+            ).strip()
+            base_url = str(
+                st.secrets.get("NAVER_API_BASE_URL")
+                or DEFAULT_BASE_URL
+            ).strip()
+    except Exception:
+        pass
+
+    # 2. OS 환경 변수 및 .env 파일 확인 (fallback 및 덮어쓰기)
+    if not client_id:
+        client_id = (
+            os.getenv("NAVER_API_KEY_ID")
+            or os.getenv("NAVER_CLIENT_ID")
+            or ""
+        ).strip()
+    if not client_secret:
+        client_secret = (
+            os.getenv("NAVER_API_KEY")
+            or os.getenv("NAVER_CLIENT_SECRET")
+            or ""
+        ).strip()
+    if base_url == DEFAULT_BASE_URL:
+        base_url = (os.getenv("NAVER_API_BASE_URL") or DEFAULT_BASE_URL).strip()
+
     return Settings(client_id=client_id, client_secret=client_secret, base_url=base_url)

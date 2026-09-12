@@ -107,13 +107,23 @@ def run_trend(
 settings = load_settings()
 st.sidebar.title("🌸 검색 조건")
 
-with st.sidebar.expander("🔑 API 인증 (.env)", expanded=not settings.is_complete):
+with st.sidebar.expander("🔑 API 인증 설정", expanded=not settings.is_complete):
     if settings.is_complete:
-        st.success(".env 에서 API Key 로드 완료")
+        st.success("🔒 API 인증 완료 (서버 설정 사용)")
+        st.caption("보안을 위해 실제 API 키는 화면 및 브라우저에 노출되지 않습니다.")
+        override = st.checkbox("다른 API Key 직접 입력", value=False)
+        if override:
+            cid_input = st.text_input("API Key ID", value="", type="password", placeholder="새로운 API Key ID 입력")
+            csec_input = st.text_input("API Key", value="", type="password", placeholder="새로운 API Key 입력")
+            cid = cid_input.strip() if cid_input.strip() else settings.client_id
+            csec = csec_input.strip() if csec_input.strip() else settings.client_secret
+        else:
+            cid = settings.client_id
+            csec = settings.client_secret
     else:
-        st.warning(".env 에 `NAVER_API_KEY_ID` / `NAVER_API_KEY` 를 넣거나 아래에 직접 입력하세요.")
-    cid = st.text_input("API Key ID", value=settings.client_id, type="password")
-    csec = st.text_input("API Key", value=settings.client_secret, type="password")
+        st.warning("⚠️ 등록된 API Key가 없습니다. .env 또는 Streamlit Secrets를 설정하거나 아래에 직접 입력하세요.")
+        cid = st.text_input("API Key ID", value="", type="password", placeholder="API Key ID를 입력하세요")
+        csec = st.text_input("API Key", value="", type="password", placeholder="API Key를 입력하세요")
 
 creds = (cid.strip(), csec.strip(), settings.base_url)
 
